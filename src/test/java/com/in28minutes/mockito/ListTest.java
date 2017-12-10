@@ -1,10 +1,14 @@
 package com.in28minutes.mockito;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -15,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class ListTest {
 
     @Test
-    public void letsMockListSize(){
+    public void letsMockListSize() {
         List list = mock(List.class);
         when(list.size()).thenReturn(12);
         list.add("1");
@@ -26,7 +30,7 @@ public class ListTest {
     }
 
     @Test
-    public void letsMockListSizeWithMultipleReturns(){
+    public void letsMockListSizeWithMultipleReturns() {
         List list = mock(List.class);
         when(list.size()).thenReturn(12).thenReturn(11);
         list.add("1");
@@ -37,7 +41,7 @@ public class ListTest {
     }
 
     @Test
-    public void letsMockListGet(){
+    public void letsMockListGet() {
         List list = mock(List.class);
         when(list.get(1)).thenReturn("hello");
 
@@ -48,7 +52,7 @@ public class ListTest {
     }
 
     @Test
-    public void letsMockListWithAny(){
+    public void letsMockListWithAny() {
         List list = mock(List.class);
         when(list.get(anyInt())).thenReturn("hello");
 
@@ -57,5 +61,17 @@ public class ListTest {
         assertEquals("hello", list.get(0));
     }
 
+    @Test
+    public void letsMockListGet_usingBDD() {
+        //given
+        List list = mock(List.class);
+        String hello = "hello";
+        given(list.get(Mockito.anyInt())).willReturn(hello);
 
+        //when
+        String firstElement = (String) list.get(0);
+
+        //then
+        assertThat(firstElement, is(hello));
+    }
 }
