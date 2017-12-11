@@ -63,15 +63,15 @@ public class ListTest {
 
     @Test
     public void letsMockListGet_usingBDD() {
-        //given
+        //given - setup
         List list = mock(List.class);
         String hello = "hello";
         given(list.get(Mockito.anyInt())).willReturn(hello);
 
-        //when
+        //when - actual method call
         String firstElement = (String) list.get(0);
 
-        //then
+        //then - asserts, check something has happened
         assertThat(firstElement, is(hello));
     }
 }
