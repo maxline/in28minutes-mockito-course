@@ -2,6 +2,7 @@ package com.in28minutes.business.impl;
 
 import com.in28minutes.data.api.TodoService;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
@@ -56,5 +57,19 @@ public class TodoBusinessImplMockitoTest {
 
     }
 
+    @Test
+    public void captureArgument(){
+        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        TodoService todoService = mock(TodoService.class);
+        List<String> allTodos = Arrays.asList("Learn Spring", "Learn Spring MVC", "Learn to dance");
+        when(todoService.retrieveTodos("Sergey")).thenReturn(allTodos);
+
+        TodoBusinessImpl todoBusinessImpl = new TodoBusinessImpl(todoService);
+        todoBusinessImpl.deleteTodosNotRelatedToSpring("Sergey");
+        verify(todoService).deleteTodo(argumentCaptor.capture());
+
+        assertEquals("Learn to dance", argumentCaptor.getValue());
+    }
 
 }
